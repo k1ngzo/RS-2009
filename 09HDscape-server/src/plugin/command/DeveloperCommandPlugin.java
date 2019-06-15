@@ -469,6 +469,10 @@ public final class DeveloperCommandPlugin extends CommandPlugin {
                 p.sendMessage("Your pin has been set by an administrator.");
                 player.sendMessage("Set " + p.getUsername() + "'s pin to " + pin + ".");
                 return true;
+            case "coord":
+            case "coords":
+                player.sendMessage("Coordinates: " + player.getLocation());
+                return true;
             case "special":
             case "spec":
                 amount = args.length > 1 ? Integer.parseInt(args[1]) : 100;

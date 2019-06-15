@@ -1,6 +1,5 @@
 package plugin.command;
 
-import org.crandor.game.container.Container;
 import org.crandor.game.interaction.Interaction;
 import org.crandor.game.node.entity.player.Player;
 import org.crandor.game.node.entity.player.ai.AIPBuilder;
@@ -11,7 +10,6 @@ import org.crandor.game.node.entity.player.ai.pvp.PVPAIPActions;
 import org.crandor.game.node.entity.player.ai.pvp.PVPAIPBuilderUtils;
 import org.crandor.game.node.entity.player.ai.resource.ResourceAIPActions;
 import org.crandor.game.node.entity.player.link.appearance.Gender;
-import org.crandor.game.node.item.Item;
 import org.crandor.game.system.command.CommandPlugin;
 import org.crandor.game.system.command.CommandSet;
 import org.crandor.game.system.task.Pulse;
@@ -24,7 +22,6 @@ import org.crandor.plugin.InitializablePlugin;
 import org.crandor.plugin.Plugin;
 import org.crandor.tools.RandomFunction;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,13 +179,29 @@ public final class AIPCommandPlugin extends CommandPlugin {
 		case "pvpfight":
 			PVPAIPActions.syncBotThread(player);
 			return true;
-
+		case "readinventory":
+		case "viewinventry":
+			player.sendMessage("Type ::oldinventory to get your old inventory back");
+			player.setBackupInventoryForViewingBots(player.getInventory());
+			player.getInventory().clear();
+			Player target = Repository.getPlayerByName(args[1]);
+			System.out.println("Target: " + target);
+			player.getInventory().addAll(Repository.getPlayerByName(args[0]).getInventory());
+			return true;
+		case "oldinventory":
+			player.getInventory().clear();
+			player.getInventory().addAll(player.getBackupInventoryForViewingBots());
+			break;
 		/*
 		    Start regular bots
 		 */
     	case "manthiev":
+    	    System.out.println("args[1]: " + args[1]);
     		new GeneralBotCreator("Bot", player.getLocation(), new ManThiever());
     		break;
+		case "memanthiev":
+			new GeneralBotCreator(player, new ManThiever());
+			break;
 
 		}
 		return false;

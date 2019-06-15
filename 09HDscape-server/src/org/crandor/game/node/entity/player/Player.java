@@ -98,6 +98,11 @@ public class Player extends Entity {
 	 */
 	private final Container inventory = new Container(28).register(new InventoryListener(this));
 
+	/*
+	* Used for looking at bot's inventories
+	 */
+	private Container backupInventoryForViewingBots = new Container(28).register(new InventoryListener(this));
+
 	/**
 	 * The equipment.
 	 */
@@ -892,6 +897,15 @@ public class Player extends Entity {
 	 */
 	public Container getInventory() {
 		return inventory;
+	}
+
+	public Container getBackupInventoryForViewingBots() {
+		return backupInventoryForViewingBots;
+	}
+	public void setBackupInventoryForViewingBots(Container i)
+	{
+	    backupInventoryForViewingBots.clear();
+		backupInventoryForViewingBots.addAll(i);
 	}
 
 	/**
